@@ -1,0 +1,283 @@
+
+
+#include<stdio.h>
+#include<conio.h>
+#include<string.h>
+#include<stdlib.h>
+void insert_record();
+void display_record();
+void search_record();
+void update_record();
+void del_record();
+
+struct node
+{
+
+    char name[100];
+    float bangla;
+    float english;
+    float math;
+    float physics;
+    float chemstry;
+    float total_number;
+    float average_number;
+};
+struct node s;
+void main()
+{
+    int n;
+    system("cls");
+    while(n!=6)
+    {
+        system("cls");
+        printf("\n***************************************************************************************************************\n\n");
+        printf("\t\t\t\t\twell come to student result card: ");
+        printf("\n***************************************************************************************************************\n\n");
+        printf("\t***AVAILABLE FUNCTION LISTIES*****\n");
+        printf("\t\t1:insert student record\n");
+        printf("\t\t2:display student record\n");
+        printf("\t\t3:search student record\n");
+        printf("\t\t4.delete student record\n");
+        printf("\t\t5.update student record\n");
+        printf("\t\t6:exit\n\n");
+        printf("\t\tEnter your choice : ");
+        scanf("%d",&n);
+        fflush(stdin);
+        switch(n)
+        {
+        case 1:
+            system("cls");
+            insert_record();
+            break;
+        case 2:
+            system("cls");
+            display_record();
+            break;
+        case 3:
+            search_record();
+
+            break;
+        case 4:
+            system("cls");
+            del_record();
+            break;
+        case 5:
+            system("cls");
+            update_record();
+            break;
+        case 6:
+            system("cls");
+            exit(1);
+            break;
+        default:
+            printf("\n\tWrong choice Entered");
+
+
+        }
+        printf("\n\tPress any key: ");
+        getch();
+
+    }
+
+}
+void insert_record()
+{
+    system("cls");
+    FILE *fp;
+    fp = fopen("project.txt","ab+");
+    if(fp==NULL)
+    {
+        printf("\n\nError:Cannot Open the file!!!");
+        return;
+    }
+    printf("\t***********************previous stored data***************\n\n");
+    display_record();
+    printf("\t*****Enter New Student Data***\n\n");
+
+    printf("\n\tEnter student name : ");
+    gets(s.name);
+    printf("\n\tEnter bangla number:  ");
+    scanf("%f",&s.bangla);
+    printf("\n\tEnter english number:  ");
+    scanf("%f",&s.english);
+    printf("\n\tEnter Math number:  ");
+    scanf("%f",&s.math);
+    printf("\n\tEnter physics number:  ");
+    scanf("%f",&s.physics);
+    printf("\n\tEnter chemistry number:  ");
+    scanf("%f",&s.chemstry);
+    fflush(stdin);
+    s.total_number =s.bangla+s.english+s.math+s.physics+s.chemstry;
+    s.average_number = s.total_number/5;
+    fwrite(&s,sizeof(s),1,fp);
+    {
+        printf("\n\tRecord inserted sucessfully\n");
+    }
+    fclose(fp);
+    printf("\n\t\tUpdate record \n");
+
+}
+void display_record()
+{
+    system("cls");
+    FILE *fp;
+    fp = fopen("project.txt","rb");
+
+    if(fp==NULL)
+    {
+        printf("\n\tError : cannot open the file\n");
+        return;
+    }
+
+    //printf("\n\tname\t\tbangla\t\t\tenglish\t\t\tmath\t\t\tphysics\t\t\tchemistry\t\ttotal\t\taverage");
+    printf("\n\n");
+    printf("\t\t\t\t\t\t\t\t\t\t\t\tDAFFODIL INTERNATIONAL UNIVERSIY\n");
+    printf("\n\n***************************************************************************************************************************************\n\n");
+    printf("\t\tName\t|\tBangla\t|\tEnglish\t|\tMath\t|\tPhysics\t|  Chemistry |\ttotal\t|\tAverage\n\n");
+    printf("*******************************************************************************************************************************************\n\n");
+    while(fread(&s,sizeof(s),1,fp)==1)
+    {
+        printf("\n\t\t%s\t |\t%.2f|\t\t%.2f |\t\t%.2f |\t\t%.2f |   %.2f  |\t%.2f\t|     %.2f\n\n",s.name,s.bangla,s.english,s.math,s.physics,s.chemstry,s.total_number,s.average_number);
+        printf("---------------------------------------------------------------------------------------------------------------------------------------------\n");
+    }
+    fclose(fp);
+}
+void search_record()
+{
+    system("cls");
+    int flag =0;
+    char name[20];
+    FILE *fp;
+
+    fp = fopen("project.txt","rb");
+    if(fp==NULL)
+    {
+        printf("\n\t\tError: cant open the file\n");
+        return;
+    }
+
+    printf("\n\tEnter the student search name: ");
+    gets(name);
+
+
+    system("cls");
+    while(fread(&s,sizeof(s),1,fp)>0 && flag==0)
+    {
+        if((strcmp(s.name,name))==0)
+        {
+            flag=1;
+
+            printf("\t\t\t\t\t\t\t\t\t\t\t\tDAFFODIL INTERNATIONAL UNIVERSITRY");
+            printf("\n\n---------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
+            printf("\n\t\tName:%s\t\t\t\t\t\t Rollno:-\t\t\t\tSemester:05\n\n",s.name);
+            printf("---------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
+            printf("\t\tSubject name |\t\t\t\t\t\t\t\t\t| Mark \n");
+            printf("\n--------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
+            printf("\t\tBangla       | \t\t\t\t\t\t\t\t\t| %.2f \n",s.bangla);
+            printf("\t\tEnglish      | \t\t\t\t\t\t\t\t\t| %.2f \n",s.english);
+            printf("\t\tMath         |\t\t\t\t\t\t\t\t\t| %.2f \n",s.math);
+            printf("\t\tPhysics      | \t\t\t\t\t\t\t\t\t| %.2f \n",s.physics);
+            printf("\t\tchemistry    | \t\t\t\t\t\t\t\t\t| %.2f \n",s.chemstry);
+
+            printf("-------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
+            printf("\t\ttotall:      | \t\t\t\t\t\t\t\t\t| %.2f \t\tAverage:\t%.2f\n",s.total_number,s.average_number);
+        }
+    }
+    if(flag==0)
+    {
+        printf("\n\tNo such record\n");
+    }
+    fclose(fp);
+}
+
+
+void del_record()
+{
+    system("cls");
+    char name[100];
+    unsigned flag = 0;
+    FILE *fp,*ft;
+    fp = fopen("project.txt","rb");
+    if(fp==NULL)
+    {
+        printf("\n\t\tError: cant open the file");
+        return;
+    }
+    printf("\n\t***previous stored data***\n\n");
+    display_record();
+    printf("\n\tEnter the student name which you want to delete :\n\n");
+    scanf("%s",name);
+    ft = fopen("project1.txt","ab+");
+    while(fread(&s,sizeof(s),1,fp)==1)
+    {
+        if(strcmp(name,s.name)!=0)
+        {
+            printf("\n\n\tRecord deleted Sucessfully\n");
+            fwrite(&s,sizeof(s),1,ft);
+
+        }
+        else
+            flag = 1;
+    }
+    if(flag==0)
+    {
+        printf("\n\nNo such record found\n");
+    }
+    fclose(fp);
+    fclose(ft);
+    remove("project.txt");
+    rename("project1.txt","project.txt");
+    printf("\n\t\nUpdated recored \n");
+    display_record();
+
+}
+void update_record()
+{
+    system("cls");
+    int flag = 0;
+    char name[20];
+    FILE *fp;
+    fp = fopen("project.txt","rb+");
+    if(fp==NULL)
+    {
+
+    }
+    printf("\n\tEnter the student name which you want update record\n ");
+    gets(name);
+    printf("\n\t\t***previously stored record of given number****\n");
+    while(fread(&s,sizeof(s),1,fp)>0 && flag==0)
+    {
+        if((strcmp(s.name,name))==0)
+        {
+            flag = 1;
+            printf("\n\tname\t\tbangla\t\t\tenglish\t\t\tmath\t\t\tphysics\t\t\tchemistry\t\ttotal\t\taverage");
+            printf("\n\t%s\t\t%f\t\t%f\t\t%f\t\t%f\t\t%f\t\t %f\t\t %f",s.name,s.bangla,s.english,s.math,s.physics,s.chemstry,s.total_number,s.average_number);
+            printf("\n\t***Now Enter the New record***\n");
+            printf("\n\tEnter student name : ");
+            gets(s.name);
+            printf("\n\tEnter bangla number:  ");
+            scanf("%f",&s.bangla);
+            printf("\n\tEnter english number:  ");
+            scanf("%f",&s.english);
+            printf("\n\tEnter Math number:  ");
+            scanf("%f",&s.math);
+            printf("\n\tEnter physics number:  ");
+            scanf("%f",&s.physics);
+            printf("\n\tEnter chemistry number:  ");
+            scanf("%f",&s.chemstry);
+            fflush(stdin);
+            s.total_number =s.bangla+s.english+s.math+s.physics+s.chemstry;
+            s.average_number = s.total_number/5;
+            fseek(fp,-(long)sizeof(s),1);
+            fwrite(&s,sizeof(s),1,fp);
+            printf("\n\tUpdate successfully check the display\n");
+
+        }
+    }
+    fclose(fp);
+    if(flag==0)
+
+        printf("\n\tError : something went wrong");
+
+    fclose(fp);
+}
